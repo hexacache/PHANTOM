@@ -1,0 +1,571 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f5f6">
+  <title>Archives internes — HEXACACHE</title>
+
+  <style>
+    :root {
+      color-scheme: light;
+      --page: #f4f5f6;
+      --surface: #ffffff;
+      --text: #252a30;
+      --muted: #68717c;
+      --line: #d9dde2;
+      --nav: #202a35;
+      --accent: #9f3434;
+      --success: #286747;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--page);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .topbar {
+      min-height: 54px;
+      padding: 0 6%;
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      background: var(--nav);
+      color: white;
+    }
+
+    .brand {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: .07em;
+      white-space: nowrap;
+    }
+
+    .topbar-label {
+      color: #c8ced5;
+      font-size: 12px;
+    }
+
+    .connection {
+      margin-left: auto;
+      color: #d6ded9;
+      font-size: 12px;
+    }
+
+    .connection::before {
+      content: "";
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      margin-right: 8px;
+      border-radius: 50%;
+      background: #7ab38e;
+    }
+
+    .page {
+      width: min(900px, 90%);
+      margin: 38px auto 60px;
+    }
+
+    .breadcrumbs {
+      margin-bottom: 22px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .breadcrumbs span {
+      padding: 0 8px;
+      color: #a0a6ad;
+    }
+
+    .heading {
+      margin-bottom: 25px;
+    }
+
+    .eyebrow {
+      margin-bottom: 7px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(24px, 4vw, 31px);
+      font-weight: 600;
+      letter-spacing: -.035em;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .status-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding: 13px 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      font-size: 12px;
+    }
+
+    .classification {
+      color: var(--accent);
+      font-weight: 700;
+      letter-spacing: .045em;
+    }
+
+    .reference,
+    .section-code {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .section {
+      margin-bottom: 18px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 13px 18px;
+      border-bottom: 1px solid var(--line);
+      background: #fafbfc;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .section-body {
+      padding: 20px 18px;
+    }
+
+    .instructions {
+      max-width: 680px;
+      margin: 0;
+    }
+
+    .cipher-table {
+      width: 100%;
+      margin: 18px 0 22px;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .cipher-table th,
+    .cipher-table td {
+      padding: 12px 3px;
+      border: 1px solid var(--line);
+      text-align: center;
+    }
+
+    .cipher-table th {
+      background: #f6f7f8;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .cipher-table td {
+      font-size: clamp(14px, 2.7vw, 19px);
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .cipher-note {
+      margin: -10px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .answer-label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .answer-row {
+      display: flex;
+      gap: 9px;
+      max-width: 490px;
+    }
+
+    input {
+      flex: 1;
+      min-width: 0;
+      padding: 11px 12px;
+      border: 1px solid #bfc6ce;
+      border-radius: 2px;
+      background: white;
+      color: var(--text);
+      font: inherit;
+    }
+
+    input:focus {
+      outline: 2px solid #9aaec2;
+      outline-offset: 1px;
+    }
+
+    button,
+    .document-link {
+      display: inline-block;
+      padding: 11px 15px;
+      border: 1px solid #344353;
+      border-radius: 2px;
+      background: #344353;
+      color: white;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    button:hover,
+    .document-link:hover {
+      background: #263441;
+    }
+
+    .message {
+      display: none;
+      margin-top: 16px;
+      padding: 12px 14px;
+      border-left: 3px solid var(--line);
+      background: #f7f8f9;
+      font-size: 13px;
+    }
+
+    .message.error {
+      display: block;
+      border-left-color: var(--accent);
+    }
+
+    .message.success {
+      display: block;
+      border-left-color: var(--success);
+    }
+
+    .next-document {
+      display: none;
+    }
+
+    .next-document.visible {
+      display: block;
+    }
+
+    .document-meta {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 10px 18px;
+      margin: 0 0 20px;
+      font-size: 13px;
+    }
+
+    .document-meta dt {
+      color: var(--muted);
+    }
+
+    .document-meta dd {
+      margin: 0;
+      font-weight: 600;
+    }
+
+    /* Image du document : taille limitée et responsive */
+    .document-image {
+      display: block;
+      width: 100%;
+      max-width: 700px;
+      height: auto;
+      margin: 20px auto 0;
+      object-fit: contain;
+      border: 1px solid var(--line);
+    }
+
+    .image-note {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 34px;
+      padding-top: 15px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    @media (max-width: 520px) {
+      .topbar {
+        padding: 0 5%;
+        gap: 13px;
+      }
+
+      .topbar-label {
+        display: none;
+      }
+
+      .page {
+        margin-top: 25px;
+      }
+
+      .section-body {
+        padding: 16px 12px;
+      }
+
+      .cipher-table th,
+      .cipher-table td {
+        padding: 10px 1px;
+      }
+
+      .answer-row {
+        flex-direction: column;
+      }
+
+      .answer-row button {
+        width: 100%;
+      }
+
+      .document-meta {
+        grid-template-columns: 105px 1fr;
+      }
+
+      .footer {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="brand">HEXACACHE</div>
+    <div class="topbar-label">Portail documentaire interne</div>
+    <div class="connection">Session active</div>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" aria-label="Fil d’Ariane">
+      Accueil <span>/</span> Archives <span>/</span> Dossier 001
+    </nav>
+
+    <div class="heading">
+      <div class="eyebrow">Direction HEXACACHE · Archives</div>
+      <h1>Consultation d'un dossier</h1>
+      <p class="subtitle">
+        Accès aux pièces documentaires associées à une enquête en cours.
+      </p>
+    </div>
+
+    <div class="status-line">
+      <div class="classification">CLASSIFICATION : CONFIDENTIEL</div>
+      <div class="reference">Référence : HC-OP-001</div>
+    </div>
+
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">Informations du dossier</h2>
+        <span class="section-code">FICHE 001</span>
+      </div>
+
+      <div class="section-body">
+        <dl class="document-meta">
+          <dt>Opération</dt>
+          <dd>PHANTOM</dd>
+
+          <dt>Objet</dt>
+          <dd>Récupération d'un document manquant</dd>
+
+          <dt>État du dossier</dt>
+          <dd>En cours de traitement</dd>
+
+          <dt>Pièce consultable</dt>
+          <dd>Message intercepté — 001</dd>
+        </dl>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">Décryptage du message</h2>
+        <span class="section-code">PROCÉDURE 01</span>
+      </div>
+
+      <div class="section-body">
+        <p class="instructions">
+          Le message ci-dessous a été transmis sous forme numérique.
+          Chaque nombre correspond à la position d'une lettre dans
+          l'alphabet : A = 1, B = 2, C = 3, etc.
+          Déchiffrez le message pour poursuivre la consultation du dossier.
+        </p>
+
+        <table class="cipher-table" aria-label="Message chiffré">
+          <thead>
+            <tr>
+              <th>01</th>
+              <th>02</th>
+              <th>03</th>
+              <th>04</th>
+              <th>05</th>
+              <th>06</th>
+              <th>07</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>16</td>
+              <td>8</td>
+              <td>1</td>
+              <td>14</td>
+              <td>20</td>
+              <td>15</td>
+              <td>13</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p class="cipher-note">
+          Source : transmission interceptée · Format : alphabet numérique
+        </p>
+
+        <form id="answer-form" style="margin-top: 24px;">
+          <label class="answer-label" for="answer">
+            Mot déchiffré
+          </label>
+
+          <div class="answer-row">
+            <input
+              id="answer"
+              name="answer"
+              type="text"
+              placeholder="Saisir le mot"
+              autocomplete="off"
+              autocapitalize="characters"
+              spellcheck="false"
+              required
+            >
+            <button type="submit">Vérifier</button>
+          </div>
+        </form>
+
+        <div id="message" class="message" role="status" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section id="next-document" class="section next-document">
+      <div class="section-header">
+        <h2 class="section-title">Pièce documentaire disponible</h2>
+        <span class="section-code">DOCUMENT 002</span>
+      </div>
+
+      <div class="section-body">
+        <p>
+          Vérification réussie. Le document suivant est disponible ci-dessous.
+        </p>
+
+        <dl class="document-meta">
+          <dt>Référence</dt>
+          <dd>HC-OP-002</dd>
+
+          <dt>Type de pièce</dt>
+          <dd>Document de mission</dd>
+
+          <dt>État</dt>
+          <dd>Disponible à la consultation</dd>
+        </dl>
+
+        <a
+          class="document-link"
+          href="document-final.png"
+          target="_blank"
+          rel="noopener"
+        >Ouvrir l'image en grand ↗</a>
+
+        <img
+          class="document-image"
+          src="document-final.png"
+          alt="Document 002 — Opération PHANTOM"
+        >
+
+        <p class="image-note">
+          Document 002 · Direction HEXACACHE · Fin de transmission.
+        </p>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>DIRECTION HEXACACHE — Service des archives</span>
+      <span>Portail documentaire · OPÉRATION PHANTOM</span>
+    </footer>
+  </main>
+
+  <script>
+    const form = document.getElementById("answer-form");
+    const input = document.getElementById("answer");
+    const message = document.getElementById("message");
+    const nextDocument = document.getElementById("next-document");
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const answer = input.value
+        .trim()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toUpperCase();
+
+      if (answer === "PHANTOM") {
+        message.className = "message success";
+        message.textContent =
+          "Vérification réussie. La pièce documentaire 002 est disponible.";
+
+        nextDocument.classList.add("visible");
+
+        nextDocument.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      } else {
+        message.className = "message error";
+        message.textContent =
+          "Réponse incorrecte. Vérifiez le message numérique et réessayez.";
+
+        nextDocument.classList.remove("visible");
+        input.focus();
+      }
+    });
+  </script>
+<footer>
+  <a href="confidentialite.html">Confidentialité</a>
+  <a href="mentions-legales.html">Mentions légales</a>
+</footer>
+</body>
+</html>
